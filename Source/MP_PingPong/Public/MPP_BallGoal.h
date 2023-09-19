@@ -8,6 +8,7 @@
 
 class AMPP_GameMode;
 class UBoxComponent;
+class UPrimitiveComponent;
 
 UCLASS()
 class MP_PINGPONG_API AMPP_BallGoal : public AActor
@@ -25,14 +26,20 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UBoxComponent* BoxComponent;
 
+	UPROPERTY(BlueprintReadWrite, EditInstanceOnly)
+	FName PlayerName;
+
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 
 private:
 
 	UPROPERTY()
 	AMPP_GameMode* GameMode;
+
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+		bool bFromSweep, const FHitResult & SweepResult);
 
 };

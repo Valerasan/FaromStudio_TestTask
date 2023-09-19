@@ -36,13 +36,13 @@ void AMPP_Ball::Tick(float DeltaTime)
 		UpdateServerTransform(GetActorTransform(), DeltaTime);
 	}
 	FString Rolle = GetLocalRole() == ROLE_SimulatedProxy ? "SimulatedProxy" : "Other";
-	UE_LOG(LogTemp, Warning, TEXT("%s, Location: %s"), *Rolle, *GetTransform().GetLocation().ToString())
+	//UE_LOG(LogTemp, Warning, TEXT("%s, Location: %s"), *Rolle, *GetTransform().GetLocation().ToString())
 }
 
 
 void AMPP_Ball::OnRep_Direction()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Direction: %s"), *Direction.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Direction: %s"), *Direction.ToString());
 }
 
 void AMPP_Ball::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

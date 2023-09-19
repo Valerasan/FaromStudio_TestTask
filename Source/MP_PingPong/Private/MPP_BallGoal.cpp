@@ -12,7 +12,7 @@
 AMPP_BallGoal::AMPP_BallGoal()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
 
 	
@@ -23,14 +23,25 @@ void AMPP_BallGoal::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// GameMode = Cast<AMPP_GameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	// IMPP_GameModeInterface::Execute_GetAllPlayers(GameMode);
+	GameMode = Cast<AMPP_GameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AMPP_BallGoal::OnBeginOverlap);
+	
 }
 
-// Called every frame
-void AMPP_BallGoal::Tick(float DeltaTime)
+void AMPP_BallGoal::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+	bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::Tick(DeltaTime);
 
+	if(HasAuthority())
+	{
+		if(!GameMode)
+			return;
+
+		GameMode->DestroyBall();
+		IMPP_GameModeInterface::Execute_AddPlayerScore(GameMode, PlayerName);
+	}
 }
+
+
 

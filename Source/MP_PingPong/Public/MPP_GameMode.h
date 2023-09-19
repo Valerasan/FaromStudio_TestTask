@@ -35,20 +35,19 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool AddPlayerScore(FName PlayerName); virtual bool AddPlayerScore_Implementation(FName PlayerName) override;
 	
-
+	void SpawnBall();
+	void DestroyBall();
 
 	
 private:
 	TArray<class APlayerStart*> FreePlayerStarts;
 	TArray<AController*> Players;
-	void SpawnBall();
 
-	FTimerHandle SpawnBallTh;
-
-
-	// UFUNCTION(Server, Reliable)
-	// void ServerSpawnBall();
+	AActor* BallActor;
 	
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastSpawnBall();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastDestroyBall();
 };

@@ -16,12 +16,18 @@ class MP_PINGPONG_API AMPP_PlayerState : public APlayerState , public IMPP_Playe
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Replicated)
 	FName PlayerName;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Replicated)
 	int32 PlayerScore = 0;
 
+	// UFUNCTION()
+	// void OnRep_PlayerScore();
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	FName GetPlayerIDName(); virtual FName GetPlayerIDName_Implementation() override;
 	

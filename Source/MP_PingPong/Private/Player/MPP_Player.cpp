@@ -44,10 +44,6 @@ void AMPP_Player::MoverRight(float Value)
 	DeltaLocation.Y = Speed * Value * UGameplayStatics::GetWorldDeltaSeconds(this);
 	FHitResult HitResult;
 	AddActorLocalOffset(DeltaLocation, true, &HitResult);
-	if(HitResult.bBlockingHit)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("YES"));
-	}
 }
 
 // Called every frame

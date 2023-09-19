@@ -69,7 +69,8 @@ FString AMPP_GameMode::InitNewPlayer(APlayerController* NewPlayerController, con
 
 	if(FreePlayerStarts.Num() == 0)
 	{
-		GetWorld()->GetTimerManager().SetTimer(SpawnBallTh, this, &AMPP_GameMode::SpawnBall, 10.f);
+		FTimerHandle TmpTh;
+		GetWorld()->GetTimerManager().SetTimer(TmpTh, this, &AMPP_GameMode::SpawnBall, 10.f);
 	}
 	else
 	{
@@ -90,7 +91,15 @@ bool AMPP_GameMode::AddPlayerScore_Implementation(FName PlayerName)
 		if(Element->PlayerState->GetClass()->ImplementsInterface(UMPP_PlayerStateInterface::StaticClass()) &&
 			IMPP_PlayerStateInterface::Execute_GetPlayerIDName(Element->PlayerState) == PlayerName)
 		{
+			// TODO: test, delete
 			IMPP_PlayerStateInterface::Execute_AddPlayerScore(Element->PlayerState, 1);
+			for (auto Element2 : Players)
+			{
+				FString Name = IMPP_PlayerStateInterface::Execute_GetPlayerIDName(Element2->PlayerState).ToString();
+				int32 PlayerInt = Cast<AMPP_PlayerState>(Element2->PlayerState)->PlayerScore;
+				UE_LOG(LogTemp, Warning, TEXT("%s: %i"), *Name, PlayerInt);
+			}
+			return true;
 		}
 	}
 	return false;
@@ -103,13 +112,24 @@ void AMPP_GameMode::SpawnBall()
 	MulticastSpawnBall();
 }
 
-// void AMPP_GameMode::ServerSpawnBall_Implementation()
-// {
-// 	MulticastSpawnBall();
-// }
+void AMPP_GameMode::DestroyBall()
+{
+	MulticastDestroyBall();
+	
+}
+
+void AMPP_GameMode::MulticastDestroyBall_Implementation()
+{
+	BallActor->Destroy();
+	FTimerHandle TmpTh;
+	GetWorld()->GetTimerManager().SetTimer(TmpTh, this, &AMPP_GameMode::SpawnBall, 3.f);
+
+
+	
+}
 
 void AMPP_GameMode::MulticastSpawnBall_Implementation()
 {
 	FActorSpawnParameters SpawnParameters;
-	GetWorld()->SpawnActor(BallCLass, &FVector::ZeroVector);
+	BallActor = GetWorld()->SpawnActor(BallCLass, &FVector::ZeroVector);
 }
