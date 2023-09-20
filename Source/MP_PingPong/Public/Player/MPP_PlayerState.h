@@ -7,9 +7,8 @@
 #include "GameFramework/PlayerState.h"
 #include "MPP_PlayerState.generated.h"
 
-/**
- * 
- */
+
+ 
 UCLASS()
 class MP_PINGPONG_API AMPP_PlayerState : public APlayerState , public IMPP_PlayerStateInterface
 {
@@ -19,11 +18,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, Replicated)
 	FName PlayerName;
 
-	UPROPERTY(BlueprintReadWrite, Replicated)
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_PlayerScore)
 	int32 PlayerScore = 0;
-
-	// UFUNCTION()
-	// void OnRep_PlayerScore();
+	
+	UFUNCTION()
+	void OnRep_PlayerScore();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

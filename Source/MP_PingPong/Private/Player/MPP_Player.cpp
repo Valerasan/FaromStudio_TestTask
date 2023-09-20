@@ -3,11 +3,13 @@
 
 #include "Player/MPP_Player.h"
 
+#include "MPP_UserWidget.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
-#include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
+#include "Player/MPP_Controller.h"
+#include "Player/MPP_PlayerState.h"
 
 // Sets default values
 AMPP_Player::AMPP_Player()
@@ -29,12 +31,32 @@ AMPP_Player::AMPP_Player()
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm);
 	
+	PlayerHUDClass = nullptr;
+	PlayerHUD = nullptr;
+	
+	
 }
 
 void AMPP_Player::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if (IsLocallyControlled() && PlayerHUDClass)
+	{
+		AMPP_Controller* PlayerController = GetController<AMPP_Controller>();
+		
+		if(!PlayerController) return;
+		PlayerHUD = CreateWidget<UMPP_UserWidget>(PlayerController, PlayerHUDClass);
+		
+		if(!PlayerHUD) return;
+		PlayerHUD->AddToPlayerScreen();
+	}
+
+	AMPP_Controller* PlayerController = GetController<AMPP_Controller>();
+	if(PlayerController)
+	{
+		PlayerController->OnScoreUpdate.AddDynamic(this, &AMPP_Player::UpdateScore);
+	}
 	
 }
 
@@ -44,6 +66,18 @@ void AMPP_Player::MoverRight(float Value)
 	DeltaLocation.Y = Speed * Value * UGameplayStatics::GetWorldDeltaSeconds(this);
 	FHitResult HitResult;
 	AddActorLocalOffset(DeltaLocation, true, &HitResult);
+}
+
+void AMPP_Player::UpdateScore(int32 Score)
+{
+	if(IsLocallyControlled())
+	{
+		PlayerHUD->SetScore(true, Score);
+	}
+	else
+	{
+		PlayerHUD->SetScore(false, Score);
+	}
 }
 
 // Called every frame

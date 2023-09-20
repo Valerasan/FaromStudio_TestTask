@@ -5,19 +5,18 @@
 
 #include "Net/UnrealNetwork.h"
 
-// void AMPP_PlayerState::OnRep_PlayerScore()
-// {
-//
-//
-// 	// TODO: update UI
-// }
+
+
+void AMPP_PlayerState::OnRep_PlayerScore()
+{
+}
 
 void AMPP_PlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 
-	DOREPLIFETIME_CONDITION(AMPP_PlayerState, PlayerScore, COND_InitialOnly);
+	DOREPLIFETIME(AMPP_PlayerState, PlayerScore);
 	DOREPLIFETIME(AMPP_PlayerState, PlayerName);
 }
 

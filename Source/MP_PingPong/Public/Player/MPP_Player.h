@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "MPP_Player.generated.h"
 
+class UMPP_UserWidget;
+
 UCLASS()
 class MP_PINGPONG_API AMPP_Player : public APawn
 {
@@ -21,7 +23,8 @@ protected:
 
 	void MoverRight(float Value);
 
-	
+	UFUNCTION()
+	void UpdateScore(int32 Score);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* StaticMeshComponent;
@@ -34,6 +37,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UCameraComponent* Camera;
+
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UMPP_UserWidget> PlayerHUDClass;
+
+	UPROPERTY()
+	UMPP_UserWidget* PlayerHUD;
 
 public:	
 	virtual void Tick(float DeltaTime) override;

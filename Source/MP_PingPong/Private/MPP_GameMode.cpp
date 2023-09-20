@@ -6,6 +6,7 @@
 #include "Ball/MPP_Ball.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
+#include "Player/MPP_Controller.h"
 #include "Player/MPP_PlayerState.h"
 
 AMPP_GameMode::AMPP_GameMode()
@@ -84,15 +85,14 @@ bool AMPP_GameMode::AddPlayerScore_Implementation(FName PlayerName)
 {
 	for (auto Element : Players)
 	{
-		// auto * PlayerState = Cast<AMPP_PlayerState>(Element->PlayerState);
-		// if(PlayerState->)
-		//
-		// PlayerState->PlayerScore++;
 		if(Element->PlayerState->GetClass()->ImplementsInterface(UMPP_PlayerStateInterface::StaticClass()) &&
 			IMPP_PlayerStateInterface::Execute_GetPlayerIDName(Element->PlayerState) == PlayerName)
 		{
 			// TODO: test, delete
-			IMPP_PlayerStateInterface::Execute_AddPlayerScore(Element->PlayerState, 1);
+
+			AMPP_Controller* Controller = Cast<AMPP_Controller>(Element);
+			Controller->AddScore();
+			//IMPP_PlayerStateInterface::Execute_AddPlayerScore(Element->PlayerState, 1);
 			for (auto Element2 : Players)
 			{
 				FString Name = IMPP_PlayerStateInterface::Execute_GetPlayerIDName(Element2->PlayerState).ToString();
