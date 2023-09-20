@@ -50,13 +50,22 @@ void AMPP_Player::BeginPlay()
 		
 		if(!PlayerHUD) return;
 		PlayerHUD->AddToPlayerScreen();
-	}
 
-	AMPP_Controller* PlayerController = GetController<AMPP_Controller>();
-	if(PlayerController)
-	{
-		PlayerController->OnScoreUpdate.AddDynamic(this, &AMPP_Player::UpdateScore);
+		// if(PlayerController->State)
+		// {
+		// 	PlayerController->State->OnScoreUpdateState.AddDynamic(this, &AMPP_Player::UpdateScore);
+		// }
+		
 	}
+	
+	// AMPP_Controller* PlayerController = GetController<AMPP_Controller>();
+	// if(PlayerController)
+	// {
+	// 	if(PlayerController->State)
+	// 		PlayerController->State->OnScoreUpdateState.AddDynamic(this, &AMPP_Player::UpdateScore);
+	// }
+
+
 	
 }
 

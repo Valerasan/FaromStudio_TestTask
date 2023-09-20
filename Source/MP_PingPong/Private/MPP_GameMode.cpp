@@ -123,9 +123,6 @@ void AMPP_GameMode::MulticastDestroyBall_Implementation()
 	BallActor->Destroy();
 	FTimerHandle TmpTh;
 	GetWorld()->GetTimerManager().SetTimer(TmpTh, this, &AMPP_GameMode::SpawnBall, 3.f);
-
-
-	
 }
 
 void AMPP_GameMode::MulticastSpawnBall_Implementation()

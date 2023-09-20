@@ -7,7 +7,7 @@
 #include "GameFramework/PlayerState.h"
 #include "MPP_PlayerState.generated.h"
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnScoreUpdateState, int32, NewScore);
  
 UCLASS()
 class MP_PINGPONG_API AMPP_PlayerState : public APlayerState , public IMPP_PlayerStateInterface
@@ -20,6 +20,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_PlayerScore)
 	int32 PlayerScore = 0;
+
+	FOnScoreUpdateState OnScoreUpdateState;
 	
 	UFUNCTION()
 	void OnRep_PlayerScore();

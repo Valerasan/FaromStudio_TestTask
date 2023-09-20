@@ -7,9 +7,6 @@
 
 
 
-void AMPP_PlayerState::OnRep_PlayerScore()
-{
-}
 
 void AMPP_PlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -18,6 +15,12 @@ void AMPP_PlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME(AMPP_PlayerState, PlayerScore);
 	DOREPLIFETIME(AMPP_PlayerState, PlayerName);
+}
+
+
+void AMPP_PlayerState::OnRep_PlayerScore()
+{
+	OnScoreUpdateState.Broadcast(PlayerScore);
 }
 
 FName AMPP_PlayerState::GetPlayerIDName_Implementation()
